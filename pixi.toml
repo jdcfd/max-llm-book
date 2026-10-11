@@ -27,7 +27,9 @@ notebook = "cd notebooks && jupyter lab tutorial.ipynb"
 # `max.nn.Module.compile()` path (full-sequence, 2-D tokens, no `capture()`)
 # supports neither. `--force` is required because the overlap scheduler is
 # re-enabled during config resolution unless force is set.
-serve = "max serve --custom-architectures gpt2_arch --model openai-community/gpt2 --no-enable-overlap-scheduler --no-device-graph-capture --force"
+# `--quantization-encoding float32` is required on GPU: without it, MAX
+# auto-casts float32 checkpoints to bfloat16, which this model doesn't support.
+serve = "max serve --custom-architectures gpt2_arch --model openai-community/gpt2 --quantization-encoding float32 --no-enable-overlap-scheduler --no-device-graph-capture --force"
 
 # Format python
 fmt = "ruff format ."

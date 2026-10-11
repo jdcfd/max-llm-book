@@ -17,8 +17,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import ClassVar
 
-from max.pipelines.lib import MAXModelConfig
+from max.pipelines.lib import MAXModelConfig, SupportedEncoding
 from max.pipelines.lib.interfaces.arch_config import (
     ArchConfigWithAttentionKVCache,
 )
@@ -28,6 +29,9 @@ from transformers import AutoConfig
 
 @dataclass
 class GPT2ArchConfig(ArchConfigWithAttentionKVCache):
+    DEFAULT_ENCODING: ClassVar[SupportedEncoding] = "float32"
+    SUPPORTED_ENCODINGS: ClassVar[set[SupportedEncoding]] = {"float32"}
+
     @property
     def num_key_value_heads(self) -> int:
         """GPT-2 uses plain MHA: n_kv_heads == n_head."""

@@ -81,5 +81,11 @@ from the Hugging Face config object:
 {{#include ../../gpt2_arch/model_config.py:book}}
 ```
 
+**`DEFAULT_ENCODING` and `SUPPORTED_ENCODINGS`:** declare the weight formats
+the model runs with. MAX reads `DEFAULT_ENCODING` to pick the model's data type
+when you don't pass `--quantization-encoding`. GPT-2 runs in `float32` only,
+the format of its published checkpoint.
+[Architecture registration](./step_12.md) reuses both values.
+
 **Next**: [Pipeline model](./step_11.md) covers `model.py`, which loads the
 compiled model, runs it, and manages the token sequence between decode steps.

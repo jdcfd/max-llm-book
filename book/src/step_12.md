@@ -47,6 +47,11 @@ which wraps the Hugging Face tokenizer for the model. Before any token is
 processed, `max serve` calls it to convert the prompt to token IDs and, after
 generation, decode the output IDs back to text.
 
+**`default_encoding` and `supported_encodings`:** tell MAX which weight formats
+the model accepts. They read from `GPT2ArchConfig` so the registration and the
+config can't disagree. If MAX resolves an encoding outside
+`supported_encodings`, it refuses to start.
+
 **`config`:** points to `GPT2ArchConfig`, which provides the KV cache
 dimensions covered in [KV cache configuration](./step_10.md).
 
@@ -65,6 +70,12 @@ incremental-decode path. Because this model replays the full sequence on every
 step (the same reason prefix caching doesn't apply), the serve command disables
 them. `--force` is required because MAX otherwise re-enables the overlap
 scheduler during startup.
+
+The command also passes `--quantization-encoding float32`. On GPU, MAX
+converts `float32` checkpoints to `bfloat16` unless you name an encoding, and
+that conversion ignores `supported_encodings`. The weight adapter converts
+weights with NumPy, which has no `bfloat16` type, so the tutorial stays in
+`float32`.
 
 ## What you've built
 

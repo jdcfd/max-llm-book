@@ -22,10 +22,17 @@ That command runs:
 
 ```sh
 max serve --custom-architectures gpt2_arch --model openai-community/gpt2 \
+  --quantization-encoding float32 \
   --no-enable-overlap-scheduler --no-device-graph-capture --force
 ```
 
-The trailing flags pin GPT-2 to the simple serving path this tutorial targets.
+`--quantization-encoding float32` keeps the weights in the format GPT-2 ships
+with. On GPU, MAX otherwise converts `float32` checkpoints to `bfloat16`, a
+16-bit format that GPUs process faster. This tutorial's model only supports
+`float32`, so without the flag the server fails at startup with
+`quantization_encoding of 'bfloat16' not supported by MAX engine`.
+
+The remaining flags pin GPT-2 to the simple serving path this tutorial targets.
 For text-generation models on GPU, MAX enables two throughput optimizations by
 default — the overlap scheduler and device graph capture — that both assume the
 standard incremental-decode execution path. This teaching model deliberately
